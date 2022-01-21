@@ -7,8 +7,9 @@ fn main() -> Result<()> {
     } else {
         String::from(" ")
     };
+    let mut line = String::new();
     loop {
-        let mut line = String::new();
+        line.clear();
         if stdin.read_line(&mut line)? == 0 {
             break;
         }
