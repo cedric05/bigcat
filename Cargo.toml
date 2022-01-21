@@ -10,7 +10,7 @@ homepage = "https://github.com/cedric05/bigcat/"
 repository = "https://github.com/cedric05/bigcat/"
 readme = "README.md"
 keywords = ["terminal", "cat"]
-categories = ["utility", "command-line"]
+categories = ["command-line-utilities"]
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
