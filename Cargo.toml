@@ -1,6 +1,6 @@
 [package]
 name = "bigcat"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Shiva Prasanth <kesavarapu.siva@gmail.com>"]
 description = "Simple command line utility which writes timestamp for each inputted line"
@@ -19,3 +19,6 @@ categories = ["command-line-utilities"]
 chrono = "0.4.19"
 anyhow = "1.0.52"
 colored ="2.0.0"
+[[example]]
+name = "loop"
+path = "examples/loop.rs"
