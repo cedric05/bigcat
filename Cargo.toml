@@ -18,3 +18,4 @@ categories = ["command-line-utilities"]
 [dependencies]
 chrono = "0.4.19"
 anyhow = "1.0.52"
+colored ="2.0.0"

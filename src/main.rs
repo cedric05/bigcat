@@ -1,4 +1,5 @@
 use anyhow::Result;
+use colored::Colorize;
 use std::{env, io::stdin};
 fn main() -> Result<()> {
     let stdin = stdin();
@@ -15,8 +16,8 @@ fn main() -> Result<()> {
         }
         print!(
             "[{timestamp}]{program_name}{input_str}",
-            timestamp = chrono::Utc::now().format("%Y-%m-%d %H:%M:%S"),
-            program_name = program_name,
+            timestamp = format!("{}", chrono::Utc::now().format("%Y-%m-%d %H:%M:%S")).green(),
+            program_name = program_name.yellow(),
             input_str = line
         );
     }
