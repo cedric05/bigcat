@@ -4,6 +4,9 @@ name: CI
 
 jobs:
   build_and_test:
+    name: Binary step
+    needs: ['create-release']
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         build: [linux, linux-arm, macos, win-msvc, win-gnu, win32-msvc]
@@ -12,47 +15,60 @@ jobs:
           os: ubuntu-18.04
           rust: nightly
           target: x86_64-unknown-linux-musl
+          extension: ""
         - build: linux-arm
           os: ubuntu-18.04
           rust: nightly
           target: arm-unknown-linux-gnueabihf
+          extension: ""
         - build: macos
           os: macos-latest
           rust: nightly
           target: x86_64-apple-darwin
+          extension: ""
         - build: win-msvc
           os: windows-2019
           rust: nightly
           target: x86_64-pc-windows-msvc
+          extension: ".exe"
         - build: win-gnu
           os: windows-2019
           rust: nightly-x86_64-gnu
           target: x86_64-pc-windows-gnu
+          extension: ".exe"
         - build: win32-msvc
           os: windows-2019
           rust: nightly
           target: i686-pc-windows-msvc
-    name: Rust project
-    runs-on: ubuntu-latest
+          extension: ".exe"
+    name: BigCat
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - name: "Setup Rust"
+        uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
-      - uses: actions-rs/cargo@v1
+          toolchain: ${{ matrix.rust }}
+          profile: minimal
+          override: true
+          target: ${{ matrix.target }}
+      - name: 'Install Strip'
+        uses: actions-rs/cargo@v1
         with:
           command: install
           args: cargo-strip
-      - uses: actions-rs/cargo@v1
+      - name: 'Build Bigcat'
+        uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --all-features
-      - uses: actions-rs/cargo@v1
+      - name: 'Strip release binary for linux and windows'
+        if: matrix.build == 'linux' || matrix.build == 'macos'
+        uses: actions-rs/cargo@v1
         with:
-          command: 
+          command: strip
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v2
         with:
           name: bigcat-${{ matrix.target }}
           path: |
-              ./target/release/bigcat
+              ./target/release/bigcat${{ matrix.extension }}
